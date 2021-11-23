@@ -155,6 +155,12 @@
   "A mode for editing Remind files"
   )
 
+(defvar remind-mode-map
+  (let ((remind-mode-map (make-sparse-keymap)))
+    remind-mode-map)
+  "Keymap for `remind-mode'.")
+
+
 (defun rem-today ()
   "Insert the date for today in a remind friendly style."
   (interactive)

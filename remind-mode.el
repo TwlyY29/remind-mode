@@ -57,13 +57,10 @@
 
 ;; Use generic-mode as a basis
 (require 'generic-x)
-(require 'highlight-numbers)
-
-(highlight-numbers-mode t)
 
 (define-generic-mode
     'remind-mode
-  '("#")
+  '("#" ";")
   '("REM" "OMIT" "SET" "FSET" "UNSET")
   '(
     ("SATISFY" . 'font-lock-type-face)
@@ -86,6 +83,18 @@
     ("[o|O][c|C][t|T]" . 'font-lock-string-face)
     ("[n|N][o|O][v|V]" . 'font-lock-string-face)
     ("[d|D][e|E][c|C]" . 'font-lock-string-face)
+    ("January" . 'font-lock-string-face)
+    ("February" . 'font-lock-string-face)
+    ("March" . 'font-lock-string-face)
+    ("April" . 'font-lock-string-face)
+    ("May" . 'font-lock-string-face)
+    ("June" . 'font-lock-string-face)
+    ("July" . 'font-lock-string-face)
+    ("August" . 'font-lock-string-face)
+    ("September" . 'font-lock-string-face)
+    ("October" . 'font-lock-string-face)
+    ("November" . 'font-lock-string-face)
+    ("December" . 'font-lock-string-face)
     ("Monday" . 'font-lock-string-face)
     ("Tuesday" . 'font-lock-string-face)
     ("Wednesday" . 'font-lock-string-face)
@@ -146,31 +155,49 @@
   "A mode for editing Remind files"
   )
 
-(defun remind-mode-run-remind ()
+(defun rem-today ()
+  "Insert the date for today in a remind friendly style."
+  (interactive)
+  (insert (format-time-string "%e %b %Y")))
+
+(defun rem-tomorrow ()
+  "Insert tomorrow's date in a remind friendly style."
+  (interactive)
+  (insert (format-time-string "%e %b %Y" (time-add (current-time) (days-to-time 1)))))
+
+(defun rem-days-away (arg)
+  "Insert a day ARG number of days in the future."
+  (interactive "nHow many Days?: ")
+  (insert (format-time-string "%e %b %Y" (time-add (current-time) (days-to-time arg)))))
+
+(defun rem-week-away ()
+  "Insert a day 7 days in the future."
+  (interactive)
+  (insert (format-time-string "%e %b %Y" (time-add (current-time) (days-to-time 7)))))
+
+(defun rem-weeks-away (arg)
+  "Insert a day ARG many weeks in future."
+(interactive "nHow many weeks?: ")
+(insert (format-time-string "%e %b %Y" (time-add (current-time) (days-to-time (* 7 arg))))))
+
+;;; from https://github.com/MrLordBrown/remind-mode/blob/master/remind-mode.el
+;; but very generic...
+
+
+(defun rem-run ()
   "Run current remind file through remind script"
   (interactive)
   (shell-command (concat "remind "
 			 (shell-quote-argument buffer-file-name)
 			 )))
 
-(defun remind-mode-run-calendar ()
+(defun rem-run-calendar ()
   "Run current remind file in calendar mode"
   (interactive)
   (shell-command (concat "remind -c "
 			 (shell-quote-argument buffer-file-name)
 			 )))
 
-(defun remind-mode-config ()
-  "Keybinds for common shell functions."
-  (local-set-key (kbd "C-c C-r") 'remind-mode-run-remind)
-  (local-set-key (kbd "C-c C-c") 'remind-mode-run-calendar)
-  )
-
-(easy-menu-define remind-menu global-map
-  "Menu for remind funtions and goodies."
-  '("Remind"
-    ["Remind Command" remind-mode-run-remind]
-    ["Calendar" remind-mode-run-calendar]))
 
 ;;;###autoload
 

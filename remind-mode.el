@@ -1,4 +1,4 @@
-;;; remind-mode.el --- major mode for editing Remind files. -*- coding: utf-8; lexical-binding: t; mode: default-generic -*-
+;;; remind-mode.el --- major mode for editing Remind files. -*- coding: utf-8; lexical-binding: t; -*-
 ;; Copyright Â© 2017, by Christopher R. Brown
 
 ;; Author: Christopher R. Brown ( mrlordvondoombraun@gmail.com )
